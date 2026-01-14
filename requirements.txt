@@ -1,0 +1,3 @@
+# AutoBlog Dependencies
+# Minimal - uses standard library for most operations
+# Claude CLI is called via subprocess (not a pip dependency)

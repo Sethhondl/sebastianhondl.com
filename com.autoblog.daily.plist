@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Service identifier -->
+    <key>Label</key>
+    <string>com.autoblog.daily</string>
+
+    <!-- Program to run -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Users/sethhondl/dev/active-projects/AutoBlog/scripts/daily_blog.py</string>
+        <string>run</string>
+    </array>
+
+    <!-- Run daily at 6:00 AM -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>6</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <!-- Working directory -->
+    <key>WorkingDirectory</key>
+    <string>/Users/sethhondl/dev/active-projects/AutoBlog</string>
+
+    <!-- Environment variables -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+        <key>HOME</key>
+        <string>/Users/sethhondl</string>
+    </dict>
+
+    <!-- Logging -->
+    <key>StandardOutPath</key>
+    <string>/tmp/autoblog.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/autoblog.err</string>
+
+    <!-- Run if missed (e.g., computer was asleep) -->
+    <key>StartOnMount</key>
+    <false/>
+
+    <!-- Don't keep alive - just run once per schedule -->
+    <key>KeepAlive</key>
+    <false/>
+
+    <!-- Nice level - run at low priority -->
+    <key>Nice</key>
+    <integer>10</integer>
+</dict>
+</plist>

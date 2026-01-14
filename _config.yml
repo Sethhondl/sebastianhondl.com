@@ -1,0 +1,84 @@
+# Jekyll Configuration for AutoBlog
+# sebastianhondl.com - AI-Assisted Development Journey
+
+title: Sebastian Hondl
+description: >-
+  Daily insights and reflections from AI-assisted software development
+  with Claude Code. Following the journey of building projects,
+  solving problems, and learning with an AI coding assistant.
+
+url: "https://sebastianhondl.com"
+baseurl: ""
+
+# Author information
+author:
+  name: Sebastian Hondl
+  email: sethhondl@gmail.com
+
+# Build settings
+theme: minima
+markdown: kramdown
+highlighter: rouge
+
+# Permalink structure
+permalink: /:year/:month/:day/:title/
+
+# Pagination
+paginate: 10
+paginate_path: "/page:num/"
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title/
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      author: Sebastian Hondl
+
+# Exclude from build
+exclude:
+  - scripts/
+  - tests/
+  - "*.py"
+  - requirements*.txt
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+  - .env
+  - .env.*
+  - "*.log"
+  - _drafts/
+  - transcripts/
+
+# Include in build
+include:
+  - _posts
+  - _layouts
+  - assets
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Feed settings
+feed:
+  posts_limit: 20
+
+# Social links (optional)
+social:
+  github: sethhondl
+  # twitter: your_twitter
+  # linkedin: your_linkedin
+
+# Google Analytics (optional)
+# google_analytics: UA-XXXXXXXX-X

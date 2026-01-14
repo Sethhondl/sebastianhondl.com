@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Environment
+.env
+.env.*
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+vendor/
+
+# Local data (don't commit the index - it's machine-specific)
+scripts/data/project_index.json
+
+# Transcripts (synced separately, can be large)
+transcripts/
+
+# Drafts (work in progress)
+_drafts/
+
+# Temp files
+*.tmp
+*.swp
+logs/
+.claude/
