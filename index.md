@@ -4,17 +4,16 @@ title: Home
 ---
 
 <div class="home-intro">
+  <h1>Welcome to My AI Development Journey</h1>
+  <p>This blog documents my daily experiences building software with <a href="https://claude.ai/code">Claude Code</a> as my AI pair programmer. Each post is a reflection on what I worked on, what I learned, and insights about AI-assisted development.</p>
 
-# Welcome to My AI Development Journey
-
-This blog documents my daily experiences building software with [Claude Code](https://claude.ai/code) as my AI pair programmer. Each post is a reflection on what I worked on, what I learned, and insights about AI-assisted development.
-
-**What you'll find here:**
-- Real projects and real problems solved with AI assistance
-- Insights about effective prompting and collaboration with AI
-- Code snippets, techniques, and patterns
-- Honest reflections on what works and what doesn't
-
+  <p><strong>What you'll find here:</strong></p>
+  <ul>
+    <li>Real projects and real problems solved with AI assistance</li>
+    <li>Insights about effective prompting and collaboration with AI</li>
+    <li>Code snippets, techniques, and patterns</li>
+    <li>Honest reflections on what works and what doesn't</li>
+  </ul>
 </div>
 
 ## Recent Posts
