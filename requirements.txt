@@ -1,3 +1,6 @@
 # AutoBlog Dependencies
 # Minimal - uses standard library for most operations
 # Claude CLI is called via subprocess (not a pip dependency)
+
+# For GitHub Actions (API fallback when CLI not available)
+anthropic>=0.40.0

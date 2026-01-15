@@ -10,12 +10,20 @@ Generates polished blog posts using a 4-pass Claude CLI pipeline:
 """
 
 import json
+import os
 import re
 import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
+
+# Try to import anthropic for API fallback
+try:
+    import anthropic
+    ANTHROPIC_AVAILABLE = True
+except ImportError:
+    ANTHROPIC_AVAILABLE = False
 
 
 @dataclass
@@ -217,7 +225,32 @@ class BlogGenerator:
             )
 
     def _call_claude(self, prompt: str, timeout: int = 300) -> str:
-        """Call Claude CLI with a prompt."""
+        """
+        Call Claude with a prompt, trying CLI first, then API fallback.
+
+        The API fallback is used when ANTHROPIC_API_KEY is set (e.g., in GitHub Actions).
+        """
+        # Check if we should use API directly (e.g., in CI environment)
+        api_key = os.environ.get('ANTHROPIC_API_KEY')
+        use_api = os.environ.get('USE_ANTHROPIC_API', '').lower() == 'true'
+
+        if use_api and api_key and ANTHROPIC_AVAILABLE:
+            return self._call_claude_api(prompt, api_key, timeout)
+
+        # Try CLI first
+        cli_result = self._call_claude_cli(prompt, timeout)
+        if cli_result:
+            return cli_result
+
+        # Fall back to API if CLI fails and API is available
+        if api_key and ANTHROPIC_AVAILABLE:
+            print("CLI failed, falling back to Anthropic API...")
+            return self._call_claude_api(prompt, api_key, timeout)
+
+        return ""
+
+    def _call_claude_cli(self, prompt: str, timeout: int = 300) -> str:
+        """Call Claude via CLI."""
         try:
             result = subprocess.run(
                 ['claude', '--print', '-p', prompt],
@@ -235,8 +268,32 @@ class BlogGenerator:
         except subprocess.TimeoutExpired:
             print(f"Claude CLI timed out after {timeout}s")
             return ""
+        except FileNotFoundError:
+            print("Claude CLI not found")
+            return ""
         except Exception as e:
             print(f"Claude CLI exception: {e}")
+            return ""
+
+    def _call_claude_api(self, prompt: str, api_key: str, timeout: int = 300) -> str:
+        """Call Claude via Anthropic API directly."""
+        try:
+            client = anthropic.Anthropic(api_key=api_key)
+
+            message = client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=4096,
+                messages=[
+                    {"role": "user", "content": prompt}
+                ]
+            )
+
+            if message.content and len(message.content) > 0:
+                return message.content[0].text
+            return ""
+
+        except Exception as e:
+            print(f"Anthropic API error: {e}")
             return ""
 
     def _format_transcripts(self, transcripts: List[Dict[str, Any]]) -> str:

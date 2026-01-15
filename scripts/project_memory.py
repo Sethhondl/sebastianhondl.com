@@ -16,7 +16,18 @@ from typing import Dict, List, Optional, Any
 
 # Default paths
 TRANSCRIPT_DIR = Path.home() / "transcript"
+REPO_TRANSCRIPT_DIR = Path(__file__).parent.parent / "transcripts"
 DEFAULT_INDEX_PATH = Path(__file__).parent / "data" / "project_index.json"
+
+
+def get_transcript_dir() -> Path:
+    """
+    Get the transcript directory, preferring local ~/transcript if available,
+    falling back to repo transcripts/ for GitHub Actions.
+    """
+    if TRANSCRIPT_DIR.exists() and any(TRANSCRIPT_DIR.iterdir()):
+        return TRANSCRIPT_DIR
+    return REPO_TRANSCRIPT_DIR
 
 
 class ProjectMemory:
@@ -24,7 +35,7 @@ class ProjectMemory:
 
     def __init__(self, index_path: Optional[Path] = None, transcript_dir: Optional[Path] = None):
         self.index_path = index_path or DEFAULT_INDEX_PATH
-        self.transcript_dir = transcript_dir or TRANSCRIPT_DIR
+        self.transcript_dir = transcript_dir or get_transcript_dir()
         self.index = self._load_index()
 
     def _load_index(self) -> Dict[str, Any]:
@@ -54,7 +65,79 @@ class ProjectMemory:
         if not self.transcript_dir.exists():
             return sessions
 
-        # Structure: ~/transcript/[project]/[date]/[session_id]/
+        # Check if this is the local structure or repo structure
+        # Local: ~/transcript/[project]/[date]/[session_id]/conversation.md
+        # Repo:  transcripts/[date]/[project]_[session_id].md
+
+        first_level_items = list(self.transcript_dir.iterdir())
+        if not first_level_items:
+            return sessions
+
+        # Detect structure by checking if first-level dirs are dates or projects
+        sample_dir = next((d for d in first_level_items if d.is_dir() and not d.name.startswith('.')), None)
+        if sample_dir is None:
+            return sessions
+
+        is_repo_structure = self._is_date_format(sample_dir.name)
+
+        if is_repo_structure:
+            sessions = self._find_sessions_repo_structure()
+        else:
+            sessions = self._find_sessions_local_structure()
+
+        return sessions
+
+    def _is_date_format(self, name: str) -> bool:
+        """Check if a directory name is in YYYY-MM-DD format."""
+        try:
+            datetime.strptime(name, '%Y-%m-%d')
+            return True
+        except ValueError:
+            return False
+
+    def _find_sessions_repo_structure(self) -> List[Dict[str, Any]]:
+        """Find sessions in repo structure: transcripts/[date]/[project]_[session_id].md"""
+        sessions = []
+
+        for date_dir in self.transcript_dir.iterdir():
+            if not date_dir.is_dir() or date_dir.name.startswith('.'):
+                continue
+
+            if not self._is_date_format(date_dir.name):
+                continue
+
+            date_str = date_dir.name
+
+            for transcript_file in date_dir.iterdir():
+                if not transcript_file.is_file() or not transcript_file.name.endswith('.md'):
+                    continue
+
+                # Parse filename: [project]_[session_id].md
+                filename = transcript_file.stem
+                parts = filename.rsplit('_', 1)
+
+                if len(parts) == 2:
+                    project_name, session_id = parts
+                else:
+                    project_name = filename
+                    session_id = filename
+
+                session_info = {
+                    "project": project_name,
+                    "date": date_str,
+                    "session_id": session_id,
+                    "path": str(date_dir),
+                    "conversation_path": str(transcript_file),
+                    "has_metadata": False
+                }
+                sessions.append(session_info)
+
+        return sessions
+
+    def _find_sessions_local_structure(self) -> List[Dict[str, Any]]:
+        """Find sessions in local structure: ~/transcript/[project]/[date]/[session_id]/"""
+        sessions = []
+
         for project_dir in self.transcript_dir.iterdir():
             if not project_dir.is_dir() or project_dir.name.startswith('.'):
                 continue
@@ -66,11 +149,10 @@ class ProjectMemory:
                     continue
 
                 # Validate date format (YYYY-MM-DD)
-                try:
-                    date_str = date_dir.name
-                    datetime.strptime(date_str, '%Y-%m-%d')
-                except ValueError:
+                if not self._is_date_format(date_dir.name):
                     continue
+
+                date_str = date_dir.name
 
                 for session_dir in date_dir.iterdir():
                     if not session_dir.is_dir():
