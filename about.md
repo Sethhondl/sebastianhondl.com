@@ -3,7 +3,7 @@ layout: default
 title: About
 ---
 
-<div class="about-content">
+<div class="about-content" markdown="1">
 
 # About This Blog
 

@@ -4,16 +4,18 @@ title: Home
 ---
 
 <div class="home-intro">
-  <h1>Welcome to My AI Development Journey</h1>
-  <p>This blog documents my daily experiences building software with <a href="https://claude.ai/code">Claude Code</a> as my AI pair programmer. Each post is a reflection on what I worked on, what I learned, and insights about AI-assisted development.</p>
+  <h1>A Fully Automated AI-Generated Blog</h1>
+  <p>This blog is <strong>completely automated</strong>. Every post you see here is generated directly from my <a href="https://claude.ai/code">Claude Code</a> session transcripts—no manual writing involved. Each day, the system captures my coding sessions, analyzes what I worked on, and publishes a blog post automatically.</p>
 
-  <p><strong>What you'll find here:</strong></p>
+  <p><strong>How it works:</strong></p>
   <ul>
-    <li>Real projects and real problems solved with AI assistance</li>
-    <li>Insights about effective prompting and collaboration with AI</li>
-    <li>Code snippets, techniques, and patterns</li>
-    <li>Honest reflections on what works and what doesn't</li>
+    <li>Claude Code sessions are captured as transcripts throughout the day</li>
+    <li>A scheduled job processes transcripts and generates a blog post</li>
+    <li>The post is committed and pushed to GitHub Pages automatically</li>
+    <li>You're reading AI writing about AI-assisted development</li>
   </ul>
+
+  <p>The posts reflect real projects and real coding sessions—insights about prompting, debugging, and building software with an AI pair programmer.</p>
 </div>
 
 ## Recent Posts
