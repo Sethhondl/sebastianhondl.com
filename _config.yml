@@ -16,9 +16,12 @@ author:
   email: sethhondl@gmail.com
 
 # Build settings
-theme: minima
 markdown: kramdown
 highlighter: rouge
+
+# Performance: disable unused features
+sass:
+  style: compressed
 
 # Permalink structure
 permalink: /:year/:month/:day/:title/
