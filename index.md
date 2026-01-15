@@ -21,16 +21,16 @@ title: Home
 <ul class="post-list">
 {% for post in site.posts limit:10 %}
   <li class="post-list-item">
-    <h3 class="post-list-title">
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    </h3>
-    <div class="post-list-meta">
-      {{ post.date | date: "%B %d, %Y" }}
-      {% if post.read_time %} · {{ post.read_time }} min read{% endif %}
-    </div>
-    {% if post.excerpt %}
-    <p class="post-list-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
-    {% endif %}
+    <a href="{{ post.url | relative_url }}" class="post-card-link">
+      <h3 class="post-list-title">{{ post.title }}</h3>
+      <div class="post-list-meta">
+        {{ post.date | date: "%B %d, %Y" }}
+        {% if post.read_time %} · {{ post.read_time }} min read{% endif %}
+      </div>
+      {% if post.excerpt %}
+      <p class="post-list-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+      {% endif %}
+    </a>
   </li>
 {% endfor %}
 </ul>
