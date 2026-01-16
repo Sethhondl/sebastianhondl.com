@@ -7,6 +7,7 @@ Coordinates project memory updates, blog generation, and Git operations.
 """
 
 import os
+import re
 import subprocess
 import sys
 from datetime import datetime, timedelta
@@ -14,6 +15,85 @@ from pathlib import Path
 from typing import Optional
 import argparse
 import logging
+
+
+def process_transcript(content: str) -> str:
+    """
+    Process a transcript to reduce size while preserving meaningful content.
+
+    Removes:
+    - <system-reminder>...</system-reminder> blocks
+    - Empty Assistant entries
+    - Potential secrets (API keys, tokens, etc.)
+
+    Summarizes:
+    - [Tool Result: ...] blocks with large file contents
+    """
+    # Remove system reminders
+    content = re.sub(
+        r'<system-reminder>.*?</system-reminder>\s*',
+        '',
+        content,
+        flags=re.DOTALL
+    )
+
+    # Redact potential secrets
+    secret_patterns = [
+        # Discord tokens (base64-ish format)
+        (r'[MN][A-Za-z0-9_-]{23,}\.[A-Za-z0-9_-]{6}\.[A-Za-z0-9_-]{27,}', '[REDACTED_DISCORD_TOKEN]'),
+        # Discord webhook URLs
+        (r'https://discord\.com/api/webhooks/\d+/[A-Za-z0-9_-]+', '[REDACTED_WEBHOOK_URL]'),
+        # Generic API keys (40+ char alphanumeric strings that look like keys)
+        (r'(?<=["\':= ])[A-Za-z0-9_-]{40,}(?=["\'\s,\n])', '[REDACTED_API_KEY]'),
+        # AWS-style keys
+        (r'AKIA[A-Z0-9]{16}', '[REDACTED_AWS_KEY]'),
+        # Generic tokens in common patterns
+        (r'(?:token|key|secret|password)["\']?\s*[:=]\s*["\']?[A-Za-z0-9_-]{20,}', '[REDACTED_CREDENTIAL]'),
+    ]
+
+    for pattern, replacement in secret_patterns:
+        content = re.sub(pattern, replacement, content, flags=re.IGNORECASE)
+
+    # Replace tool results with summaries
+    def summarize_tool_result(match):
+        result_content = match.group(1)
+        lines = result_content.strip().split('\n')
+        line_count = len(lines)
+
+        # For short results (< 10 lines), keep them
+        if line_count < 10:
+            return match.group(0)
+
+        # Try to identify file reads (have line number prefixes like "     1→")
+        if re.search(r'^\s*\d+→', lines[0] if lines else ''):
+            # Extract first meaningful line for context
+            first_content = ''
+            for line in lines[:5]:
+                stripped = re.sub(r'^\s*\d+→', '', line).strip()
+                if stripped and not stripped.startswith('#'):
+                    first_content = stripped[:50]
+                    break
+            return f'[Tool Result: ({line_count} lines) {first_content}...]'
+
+        # For other tool results, show line count and preview
+        preview = lines[0][:50] if lines else ''
+        return f'[Tool Result: ({line_count} lines) {preview}...]'
+
+    content = re.sub(
+        r'\[Tool Result:\s*(.*?)\]',
+        summarize_tool_result,
+        content,
+        flags=re.DOTALL
+    )
+
+    # Remove empty assistant entries (## Assistant [timestamp] followed by blank lines then another ##)
+    content = re.sub(
+        r'## Assistant \[[^\]]+\]\s*\n\s*\n(?=## )',
+        '',
+        content
+    )
+
+    return content
 
 # Add scripts directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent))
@@ -199,8 +279,6 @@ class DailyBlogRunner:
         Returns:
             True if successful
         """
-        import shutil
-
         transcripts_dir = self.repo_dir / "transcripts"
         transcripts_dir.mkdir(parents=True, exist_ok=True)
 
@@ -244,7 +322,11 @@ class DailyBlogRunner:
                     dest_dir.mkdir(parents=True, exist_ok=True)
 
                     dest_file = dest_dir / f"{project_dir.name}_{session_dir.name}.md"
-                    shutil.copy2(conversation, dest_file)
+
+                    # Process transcript to reduce size
+                    raw_content = conversation.read_text(encoding='utf-8')
+                    processed_content = process_transcript(raw_content)
+                    dest_file.write_text(processed_content, encoding='utf-8')
                     synced_count += 1
 
         self.logger.info(f"  Synced {synced_count} transcript files")

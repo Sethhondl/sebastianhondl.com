@@ -28,8 +28,8 @@ vendor/
 # Local data (don't commit the index - it's machine-specific)
 scripts/data/project_index.json
 
-# Transcripts (synced separately, can be large)
-transcripts/
+# Transcripts are now tracked for GitHub Actions
+# transcripts/
 
 # Drafts (work in progress)
 _drafts/
