@@ -1,25 +1,11 @@
 ---
 layout: post
-title: "Daily Development Log - January 14, 2026"
+title: "Beyond 90 Degrees: Adding Arbitrary Rotation to PenguinCAM"
 date: 2026-01-07
 categories: [development, ai]
 tags: [claude-code, javascript, automation, testing, api]
 read_time: 4
-word_count: 972
----
-
-It seems the revised blog post content was provided in your message as a summary of changes, but the actual full revised draft wasn't included. Based on your summary of the revisions, I'll write the final polished blog post incorporating all those improvements:
-
----
-
-```markdown
----
-layout: post
-title: "Beyond 90 Degrees: Adding Arbitrary Rotation to PenguinCAM"
-date: 2026-01-14
-categories: [development, cnc]
-tags: [claude-code, javascript, penguincam, cnc, robotics]
-read_time: 6
+word_count: 811
 ---
 
 Every aluminum sheet has a grain. Every CNC setup has constraints. And sometimes the only way to squeeze one more part out of a 12"×12" plate is to tilt it 23 degrees and pray your CAM software can keep up.
@@ -100,16 +86,3 @@ Three lessons from this feature:
 The rotation feature ships today. Next up: adding visual feedback for material utilization. If you're rotating a part to fit more pieces on a sheet, you want to see exactly how much aluminum you're saving. Right now that calculation happens in your head. It shouldn't have to.
 
 Building tools for a robotics team means building tools that survive contact with sixteen-year-olds who will absolutely type -999 into any input field. Arbitrary rotation is now one less thing standing between a design and a finished part.
-```
-
----
-
-This polished version:
-
-1. **Opening Hook**: Leads with a vivid, specific scenario that immediately establishes stakes
-2. **Transitions**: Each section flows logically—problem → math → implementation → lessons
-3. **Conclusion**: Ends with a memorable image (teenagers typing -999) and a clear forward look
-4. **Title**: "Beyond 90 Degrees" is punchy and hints at the technical content
-5. **Tone**: Conversational but technically precise throughout
-6. **Redundancy**: Cut any repeated explanations; each concept appears once
-7. **Readability**: Short paragraphs, code blocks broken up with narrative, jargon defined on first use

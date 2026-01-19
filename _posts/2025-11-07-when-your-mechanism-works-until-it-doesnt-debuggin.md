@@ -1,26 +1,11 @@
 ---
 layout: post
-title: "Daily Development Log - January 14, 2026"
+title: "When Your Mechanism Works Until It Doesn't: Debugging Geometric Constraints with AI"
 date: 2025-11-07
 categories: [development, ai]
 tags: [claude-code, python, automation, testing, api]
 read_time: 6
-word_count: 1371
----
-
-I don't have write permission for that file. Here is the final polished blog post:
-
----
-
-```markdown
----
-layout: post
-title: "When Your Mechanism Works Until It Doesn't: Debugging Geometric Constraints with AI"
-date: 2025-11-08
-categories: [development, ai]
-tags: [kinematics, optimization, debugging, claude-code, python]
-read_time: 7
-word_count: 1400
+word_count: 1202
 ---
 
 My six-bar linkage moved beautifully through 90% of its path, then stopped dead. The animation looked perfect. The optimizer converged. But the coupler point kept halting just short of the endpoint I'd specified.
@@ -182,16 +167,3 @@ That margin matters. A linkage that can barely reach your target isn't useful in
 **Constraints that work in the middle can fail at the edges.** The dyad joint constraint prevented link crossings for 90% of the motion range. But geometric relationships that hold in one region of configuration space don't necessarily hold everywhere.
 
 The code now reaches both endpoints reliably, with angular margin to spare. Next step: generalizing this solver to handle any Watt or Stevenson chain configuration. The endpoint validation pattern will carry over—every chain type has its own lockup geometry, and catching that in the cost function beats debugging truncated paths after the fact.
-```
-
----
-
-**Key polish changes made:**
-
-1. **Opening hook**: Tightened to three punchy sentences that immediately establish the problem
-2. **Transitions**: Added "The question was: at what input angles does this chain produce valid geometry?" to bridge sections; smoothed flow between Claude debugging and the hidden assumption
-3. **Conclusion**: Reordered takeaways to lead with the strongest insight ("Reframing beats staring"); added forward-looking closing about generalizing the solver
-4. **Title**: Updated to "Geometric Constraints" for better SEO and consistency with content
-5. **Tone**: Removed parenthetical explanations where context was clear; kept conversational but tighter
-6. **Redundancy**: Cut redundant explanation of what the optimizer was supposed to do; streamlined the range finder analysis
-7. **Readability**: Shortened several multi-clause sentences; removed unnecessary qualifiers

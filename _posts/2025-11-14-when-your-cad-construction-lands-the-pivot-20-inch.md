@@ -1,23 +1,11 @@
 ---
 layout: post
-title: "Daily Development Log - January 14, 2026"
+title: "When Your CAD Construction Lands the Pivot 20 Inches Away"
 date: 2025-11-14
 categories: [development, ai]
 tags: [claude-code, git, testing, debugging]
 read_time: 6
-word_count: 1311
----
-
-Looking at this blog post, it's already quite strong. The content is solid, the technical explanations are clear, and the conversational tone works well. Let me apply the final polish with focus on the specific areas mentioned.
-
----
-layout: post
-title: "When Your CAD Construction Lands the Pivot 20 Inches Away"
-date: 2026-01-14
-categories: [development, ai]
-tags: [claude-code, matlab, mechanical-engineering]
-read_time: 8
-word_count: 1850
+word_count: 1246
 ---
 
 "You may use MATLAB for assistance, but please do not use MATLAB to solve Problem 1."

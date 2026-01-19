@@ -57,6 +57,9 @@ Write an engaging blog post (600-1000 words) that:
 Format the post as markdown with a clear title (# heading).
 Include practical takeaways that readers can apply.
 
+IMPORTANT: Output ONLY the blog post markdown, starting with # Title.
+Do NOT include any preamble, commentary, code fences, or explanatory notes.
+
 Write the blog post now:"""
 
 REVIEW_PROMPT = """You are a professional editor reviewing a blog post about AI-assisted development.
@@ -95,6 +98,9 @@ Make sure to:
 - Keep the post focused and well-structured
 - Ensure all technical details are accurate
 
+IMPORTANT: Output ONLY the blog post markdown, starting with # Title.
+Do NOT include any preamble, commentary, code fences, or explanatory notes.
+
 Write the revised blog post in full (don't summarize or abbreviate):"""
 
 POLISH_PROMPT = """You are doing a final polish pass on a blog post before publication.
@@ -112,6 +118,9 @@ Apply a final polish for publication. Focus on:
 5. **Tone**: Consistent, conversational voice throughout
 6. **Redundancy**: Remove any repetitive content
 7. **Readability**: Clear, concise sentences
+
+IMPORTANT: Output ONLY the blog post markdown, starting with # Title.
+Do NOT include any preamble, commentary, code fences, or explanatory notes.
 
 Write the final polished blog post in full:"""
 
@@ -200,6 +209,9 @@ class BlogGenerator:
                 # Fall back to revised if polish fails
                 print("Warning: Polish failed, using revised version")
                 final = revised
+
+            # Clean up Claude's output (strip code fences, preamble, etc.)
+            final = self._clean_claude_output(final)
 
             # Extract title and format
             title = self._extract_title(final)
@@ -344,16 +356,57 @@ class BlogGenerator:
 
         return "\n\n".join(sections)
 
+    def _clean_claude_output(self, content: str) -> str:
+        """
+        Clean Claude's output by extracting the actual blog post.
+
+        Handles cases where Claude wraps output in:
+        - Markdown code fences (```markdown ... ```)
+        - Preamble text ("Here's the blog post...")
+        - Trailing commentary ("This version improves...")
+        """
+        if not content:
+            return content
+
+        # Try to extract content from markdown code fence
+        # Look for ```markdown or just ``` containing the blog post
+        code_fence_pattern = r'```(?:markdown)?\s*\n(---\s*\nlayout:\s*post.*?```|# .+?)```'
+        match = re.search(code_fence_pattern, content, re.DOTALL)
+        if match:
+            content = match.group(1).strip()
+
+        # If content has frontmatter inside, extract just the post body
+        # (This handles case where Claude included full Jekyll frontmatter)
+        if content.startswith('---') and '\n---' in content[3:]:
+            # Find the end of frontmatter
+            end_idx = content.index('\n---', 3) + 4
+            # Skip any whitespace after frontmatter
+            while end_idx < len(content) and content[end_idx] in '\n\r':
+                end_idx += 1
+            content = content[end_idx:]
+
+        # If the first non-empty line is not a title, find and strip to the title
+        lines = content.strip().split('\n')
+        first_non_empty = next((l for l in lines if l.strip()), "")
+        if not first_non_empty.startswith('# '):
+            # Search for the first # heading and take from there
+            for i, line in enumerate(lines):
+                if line.strip().startswith('# '):
+                    content = '\n'.join(lines[i:])
+                    break
+
+        return content.strip()
+
     def _extract_title(self, content: str) -> str:
         """Extract the title from the blog post content."""
-        # Look for # Title at the start
+        # Look for # Title anywhere in first portion of content
         lines = content.strip().split('\n')
-        for line in lines[:5]:
+        for line in lines[:20]:  # Search more lines
             line = line.strip()
             if line.startswith('# '):
                 return line[2:].strip()
 
-        # Fallback title
+        # Fallback title - use the provided date context if available
         return f"Daily Development Log - {datetime.now().strftime('%B %d, %Y')}"
 
     def _generate_filename(self, date: Optional[str], title: str) -> str:

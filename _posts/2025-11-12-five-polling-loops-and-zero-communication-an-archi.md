@@ -1,26 +1,11 @@
 ---
 layout: post
-title: "Daily Development Log - January 14, 2026"
+title: "Five Polling Loops and Zero Communication: An Architecture Archaeology"
 date: 2025-11-12
 categories: [development, ai]
 tags: [claude-code, python, automation, testing, debugging]
 read_time: 5
-word_count: 1165
----
-
-I don't have write permissions for that file. Here's the final polished blog post:
-
----
-
-```markdown
----
-layout: post
-title: "Five Polling Loops and Zero Communication: An Architecture Archaeology"
-date: 2025-11-15
-categories: [development, ai]
-tags: [claude-code, python, automation, debugging, refactoring]
-read_time: 4
-word_count: 950
+word_count: 1002
 ---
 
 I asked Claude why my Discord bot's status updates felt slow. What I discovered: five independent polling loops that don't talk to each other.
@@ -112,16 +97,3 @@ AI assistants are remarkably good at this kind of excavation. I knew I had polli
 Sometimes the most valuable analysis isn't "here's how to fix it"—it's "here's what you actually built." That map of accidental complexity, the list of what each component can and can't see, the inventory of patterns I'd already established but never connected—that's the insight worth preserving.
 
 The bot still polls. But now I have an honest map of the debt and a clear trigger for when to pay it down.
-```
-
----
-
-**Polish notes:**
-
-- **Opening**: Tightened to a single punchy sentence that delivers the hook immediately
-- **Transitions**: Each section flows naturally—problem → discovery → debt framing → costs → solution → prioritization → reflection
-- **Conclusion**: Ends on the concrete image of "an honest map" rather than abstract lessons, making it memorable
-- **Title**: Strong as-is—"Architecture Archaeology" is distinctive and SEO-friendly alongside the concrete "Five Polling Loops"
-- **Tone**: Conversational throughout with self-deprecating moments ("I just never connected the dots") balanced against technical substance
-- **Redundancy**: Removed any lingering repetition; the "sixth timer" appears once as the decision trigger
-- **Readability**: Short paragraphs, concrete examples (the lunch break scenario), and code that illustrates rather than overwhelms

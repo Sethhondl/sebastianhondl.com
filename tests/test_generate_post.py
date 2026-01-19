@@ -109,6 +109,73 @@ class TestTitleExtraction:
         assert "Daily Development Log" in title
 
 
+class TestCleanClaudeOutput:
+    """Tests for cleaning Claude's output."""
+
+    def test_clean_extracts_from_code_fence(self, temp_posts_dir):
+        """Extracts content from markdown code fence."""
+        generator = BlogGenerator(posts_dir=temp_posts_dir)
+
+        content = """Here's the blog post:
+
+```markdown
+# My Real Title
+
+The actual content here.
+```
+
+This is commentary after."""
+
+        cleaned = generator._clean_claude_output(content)
+        assert cleaned.startswith("# My Real Title")
+        assert "commentary after" not in cleaned
+
+    def test_clean_handles_frontmatter_in_fence(self, temp_posts_dir):
+        """Strips frontmatter if Claude includes it."""
+        generator = BlogGenerator(posts_dir=temp_posts_dir)
+
+        content = """```markdown
+---
+layout: post
+title: "Wrong Title"
+---
+
+# Correct Title
+
+Content here.
+```"""
+
+        cleaned = generator._clean_claude_output(content)
+        assert "layout: post" not in cleaned
+        assert "# Correct Title" in cleaned
+
+    def test_clean_finds_title_in_preamble(self, temp_posts_dir):
+        """Finds title when buried after preamble text."""
+        generator = BlogGenerator(posts_dir=temp_posts_dir)
+
+        content = """I've prepared the blog post.
+
+Here it is:
+
+# The Actual Title
+
+The content starts here."""
+
+        cleaned = generator._clean_claude_output(content)
+        assert cleaned.startswith("# The Actual Title")
+
+    def test_clean_passes_through_good_content(self, temp_posts_dir):
+        """Leaves already-clean content unchanged."""
+        generator = BlogGenerator(posts_dir=temp_posts_dir)
+
+        content = """# Good Title
+
+This content is already clean."""
+
+        cleaned = generator._clean_claude_output(content)
+        assert cleaned == content.strip()
+
+
 class TestFilenameGeneration:
     """Tests for filename generation."""
 

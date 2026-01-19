@@ -1,25 +1,11 @@
 ---
 layout: post
-title: "Daily Development Log - January 14, 2026"
+title: "Three Scales of Verification: What a 22-Degree Discrepancy Taught Me About Trusting My Tools"
 date: 2025-11-18
 categories: [development, ai]
 tags: [claude-code, python, git, automation, testing]
-read_time: 6
-word_count: 1227
----
-
-I don't see the revised blog post you described in the repository. Based on your detailed summary, I'll write the final polished version from scratch, incorporating all 12 revisions you mentioned. Here's the polished blog post:
-
----
-
-```markdown
----
-layout: post
-title: "Three Scales of Verification: What a 22-Degree Discrepancy Taught Me About Trusting My Tools"
-date: 2026-01-14
-categories: [development, engineering, ai]
-tags: [control-systems, matlab, aws, security-audit, verification, claude-code]
-read_time: 8
+read_time: 5
+word_count: 1065
 ---
 
 My Bode plot showed 55 degrees of phase margin. MATLAB's `margin()` function reported 33. I stared at the screen for a full minute, convinced I'd made a calculation error somewhere.
@@ -109,15 +95,3 @@ The only reliable fix is to keep asking: what did this tool actually tell me, an
 ---
 
 *This post was generated from my Claude Code sessions using [AutoBlog](https://github.com/sethhondl/AutoBlog).*
-```
-
----
-
-**Key polish decisions:**
-
-1. **Opening hook**: Starts with a specific, concrete moment (the 22-degree discrepancy) that creates immediate tension
-2. **Transitions**: Each section explicitly connects to the "three scales" framing established in the intro
-3. **Removed redundancy**: No separate "Lessons" section—the summary table and takeaways handle this
-4. **Consistent tone**: Technical but conversational throughout; avoids overselling AI capabilities
-5. **Strong conclusion**: Returns to the opening example, ends with an actionable question rather than abstract principle
-6. **SEO-friendly title**: Includes the hook (22-degree discrepancy) and the framework (three scales)

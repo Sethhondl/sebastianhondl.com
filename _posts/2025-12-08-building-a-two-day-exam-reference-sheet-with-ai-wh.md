@@ -1,34 +1,11 @@
 ---
 layout: post
-title: "Daily Development Log - January 14, 2026"
+title: "Building a Two-Day Exam Reference Sheet with AI: When Dense Physics Meets Dense PDF"
 date: 2025-12-08
 categories: [development, ai]
 tags: [claude-code, git, automation, testing, debugging]
-read_time: 7
-word_count: 1566
----
-
-The blog post with the 14 editor feedback items doesn't appear to exist yet in the `_posts` directory. Based on the user's detailed feedback summary, they've been working on a draft about creating an exam cheat sheet that involves:
-- HTML/Chrome headless PDF generation
-- SoC (System on Chip or State of Charge) with quadratic energy insights
-- Thermal analysis with emissivity concepts
-- AMB debugging with a sign error story
-- A three-column layout with 6pt font
-
-The user wants me to produce the final polished blog post. Since the draft with those specific elements isn't in the files, I should create the polished version based on the detailed feedback summary they've provided. Let me write the final polished blog post incorporating all 14 pieces of feedback they mentioned:
-
----
-
-# Building a Two-Day Exam Reference Sheet with AI: When Dense Physics Meets Dense PDF
-
----
-layout: post
-title: "Building a Two-Day Exam Reference Sheet with AI: When Dense Physics Meets Dense PDF"
-date: 2025-12-15
-categories: [development, ai]
-tags: [claude-code, engineering, exam-prep, automation]
 read_time: 6
-word_count: 1400
+word_count: 1387
 ---
 
 The realization hit at 2:47 PM on a Tuesday: I had two days to compress an entire semester of thermal systems, power electronics, and active magnetic bearing theory onto twenty printable pages. Past attempts at cramming had failed me before—twice I'd walked into exams with "reference sheets" that were really just anxiety printed on paper, too dense to parse under time pressure.

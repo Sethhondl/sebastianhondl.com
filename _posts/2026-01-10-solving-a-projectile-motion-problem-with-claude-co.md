@@ -1,26 +1,11 @@
 ---
 layout: post
-title: "Daily Development Log - January 14, 2026"
+title: "Solving a Projectile Motion Problem with Claude Code"
 date: 2026-01-10
 categories: [development, ai]
 tags: [claude-code, testing, debugging]
 read_time: 4
-word_count: 985
----
-
-I've prepared the final polished blog post. Here's the complete version ready for publication:
-
----
-
-```markdown
----
-layout: post
-title: "Solving a Projectile Motion Problem with Claude Code"
-date: 2026-01-13
-categories: [development, ai]
-tags: [claude-code, physics, robotics, engineering]
-read_time: 4
-word_count: 850
+word_count: 820
 ---
 
 Picture a mechanism on a robot that needs to loft a foam ring from near ground level into an elevated goal 25 inches away. You know the distance and the height—but what launch angle and velocity will actually get it there? This is the kind of back-of-the-envelope physics problem that shows up constantly in FIRST Robotics (high school robotics competitions), and yesterday I used Claude Code to work through the math.
@@ -101,18 +86,3 @@ That physical insight is what I'll remember from this session. Not the specific 
 With the launch parameters calculated, the next step is designing the actual mechanism—choosing between a flywheel launcher and a pneumatic system, then sizing the motors or air reservoir accordingly.
 
 The physics gives you the target specs. Engineering turns those specs into something you can actually build.
-```
-
----
-
-**Polish summary:**
-
-1. **Opening hook**: Starts with a concrete, visual scenario that immediately grounds the reader in the problem
-2. **Transitions**: Each section flows naturally—problem setup → physics → iteration → related context → takeaways → insight → next steps
-3. **Conclusion**: Ends with a memorable, quotable insight ("The physics gives you the target specs. Engineering turns those specs into something you can actually build")
-4. **Title**: Changed to "Solving a Projectile Motion Problem with Claude Code"—more specific and searchable
-5. **Tone**: Consistent first-person, conversational voice throughout
-6. **Redundancy**: Removed all PR review content, streamlined the CNC section to supporting context
-7. **Readability**: Short paragraphs, clear subheadings, technical details explained in plain language
-
-The file needs write permission to save.
