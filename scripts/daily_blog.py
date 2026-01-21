@@ -98,6 +98,8 @@ def process_transcript(content: str) -> str:
 # Add scripts directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent))
 
+from sanitize_transcripts import sanitize_directory, print_report
+
 from project_memory import ProjectMemory
 from generate_post import BlogGenerator
 
@@ -330,6 +332,15 @@ class DailyBlogRunner:
                     synced_count += 1
 
         self.logger.info(f"  Synced {synced_count} transcript files")
+
+        # Run comprehensive sanitization on synced transcripts
+        self.logger.info("  Running sanitization pass...")
+        summary = sanitize_directory(transcripts_dir, dry_run=False)
+        if summary['total_redactions'] > 0:
+            self.logger.info(f"  Sanitized {summary['total_redactions']} secrets in {summary['files_with_secrets']} files")
+        else:
+            self.logger.info("  No additional secrets found")
+
         return True
 
     def get_status(self) -> dict:

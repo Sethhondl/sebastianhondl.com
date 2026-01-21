@@ -28,8 +28,8 @@ vendor/
 # Local data (don't commit the index - it's machine-specific)
 scripts/data/project_index.json
 
-# Transcripts (excluded - may contain secrets from sessions)
-transcripts/
+# Transcripts are now sanitized before commit (secrets removed)
+# See scripts/sanitize_transcripts.py
 
 # Drafts (work in progress)
 _drafts/
