@@ -67,8 +67,8 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Add any new posts and updated index
-          git add _posts/ scripts/data/project_index.json
+          # Add any new posts (project_index.json is gitignored intentionally)
+          git add _posts/
 
           # Check if there are changes to commit
           if git diff --cached --quiet; then
