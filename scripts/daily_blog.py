@@ -162,6 +162,12 @@ class DailyBlogRunner:
 
         self.logger.info(f"Starting daily blog generation for {date}")
 
+        # Check if post already exists for this date (idempotency)
+        existing = list(self.posts_dir.glob(f"{date}-*.md"))
+        if existing:
+            self.logger.info(f"Post already exists for {date}: {existing[0].name}")
+            return True
+
         try:
             # Step 1: Update project memory index
             self.logger.info("Step 1/4: Updating project memory index...")
@@ -238,10 +244,10 @@ class DailyBlogRunner:
             # Add the new post
             subprocess.run(['git', 'add', str(filepath)], check=True)
 
-            # Also add updated project index
+            # Also add updated project index (ignore if in .gitignore)
             index_file = self.scripts_dir / "data" / "project_index.json"
             if index_file.exists():
-                subprocess.run(['git', 'add', str(index_file)], check=True)
+                subprocess.run(['git', 'add', str(index_file)], check=False)
 
             # Check if there are changes to commit
             result = subprocess.run(

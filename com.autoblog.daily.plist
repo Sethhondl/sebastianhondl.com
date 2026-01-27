@@ -10,18 +10,12 @@
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/python3</string>
-        <string>/Users/sethhondl/dev/active-projects/AutoBlog/scripts/daily_blog.py</string>
-        <string>run</string>
+        <string>/Users/sethhondl/dev/active-projects/AutoBlog/scripts/login_trigger.py</string>
     </array>
 
-    <!-- Run daily at 6:00 AM -->
-    <key>StartCalendarInterval</key>
-    <dict>
-        <key>Hour</key>
-        <integer>6</integer>
-        <key>Minute</key>
-        <integer>0</integer>
-    </dict>
+    <!-- Run on login/load -->
+    <key>RunAtLoad</key>
+    <true/>
 
     <!-- Working directory -->
     <key>WorkingDirectory</key>
@@ -31,7 +25,7 @@
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+        <string>/Users/sethhondl/.nvm/versions/node/v22.9.0/bin:/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
         <key>HOME</key>
         <string>/Users/sethhondl</string>
     </dict>
@@ -42,11 +36,7 @@
     <key>StandardErrorPath</key>
     <string>/tmp/autoblog.err</string>
 
-    <!-- Run if missed (e.g., computer was asleep) -->
-    <key>StartOnMount</key>
-    <false/>
-
-    <!-- Don't keep alive - just run once per schedule -->
+    <!-- Don't keep alive - just run once on load -->
     <key>KeepAlive</key>
     <false/>
 
