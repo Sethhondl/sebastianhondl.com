@@ -17,6 +17,13 @@ import argparse
 import logging
 
 
+# Projects whose blog posts should be saved to _drafts/ instead of _posts/
+# These posts won't be published automatically but can be reviewed and moved later
+DRAFT_ONLY_PROJECTS = [
+    "derivux",
+]
+
+
 def process_transcript(content: str) -> str:
     """
     Process a transcript to reduce size while preserving meaningful content.
@@ -135,6 +142,7 @@ class DailyBlogRunner:
     def __init__(self, repo_dir: Optional[Path] = None, log_file: Optional[Path] = None):
         self.repo_dir = repo_dir or Path(__file__).parent.parent
         self.posts_dir = self.repo_dir / "_posts"
+        self.drafts_dir = self.repo_dir / "_drafts"
         self.scripts_dir = self.repo_dir / "scripts"
         self.log_file = log_file
         self.logger = setup_logging(log_file)
@@ -206,9 +214,18 @@ class DailyBlogRunner:
 
             self.logger.info(f"  Title: {result.title}")
 
-            # Save the post
-            filepath = self.generator.save_post(result)
-            self.logger.info(f"  Saved to: {filepath}")
+            # Check if this should be a draft (any project matches draft-only list)
+            is_draft_only = self._is_draft_only_project(context['projects_worked_on'])
+
+            # Save the post to appropriate directory
+            if is_draft_only:
+                self.drafts_dir.mkdir(parents=True, exist_ok=True)
+                filepath = self.drafts_dir / result.filename
+                filepath.write_text(result.content)
+                self.logger.info(f"  Saved to drafts (draft-only project): {filepath}")
+            else:
+                filepath = self.generator.save_post(result)
+                self.logger.info(f"  Saved to: {filepath}")
 
             # Step 4: Git commit and push
             if not skip_push:
@@ -276,6 +293,15 @@ class DailyBlogRunner:
         except Exception as e:
             self.logger.error(f"  Unexpected error during git push: {e}")
             return False
+
+    def _is_draft_only_project(self, projects: list) -> bool:
+        """Check if any project in the list is marked as draft-only."""
+        for project in projects:
+            project_lower = project.lower()
+            for draft_project in DRAFT_ONLY_PROJECTS:
+                if draft_project.lower() in project_lower:
+                    return True
+        return False
 
     def sync_transcripts(self, days: int = 7) -> bool:
         """
