@@ -176,6 +176,12 @@ class DailyBlogRunner:
             self.logger.info(f"Post already exists for {date}: {existing[0].name}")
             return True
 
+        # Also check drafts directory
+        existing_draft = list(self.drafts_dir.glob(f"{date}-*.md"))
+        if existing_draft:
+            self.logger.info(f"Draft already exists for {date}: {existing_draft[0].name}")
+            return True
+
         try:
             # Step 1: Update project memory index
             self.logger.info("Step 1/4: Updating project memory index...")

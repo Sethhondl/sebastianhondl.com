@@ -115,6 +115,35 @@ class TestRunWorkflow:
         assert success is True
 
 
+class TestIdempotency:
+    """Tests for idempotency checks."""
+
+    def test_runner_idempotent_with_drafts(
+        self, tmp_path, sample_transcripts_dir, mock_claude_cli
+    ):
+        """A pre-existing draft for a date prevents re-generation."""
+        repo_dir = tmp_path / "repo"
+        repo_dir.mkdir()
+        (repo_dir / "_posts").mkdir()
+        drafts_dir = repo_dir / "_drafts"
+        drafts_dir.mkdir()
+        (repo_dir / "scripts" / "data").mkdir(parents=True)
+
+        # Create an existing draft for the target date
+        draft_file = drafts_dir / "2026-01-14-existing-draft.md"
+        draft_file.write_text("---\ntitle: Existing Draft\n---\nContent")
+
+        runner = DailyBlogRunner(repo_dir=repo_dir)
+        runner.memory.transcript_dir = sample_transcripts_dir
+
+        with patch.object(runner.generator, 'generate') as mock_generate:
+            success = runner.run(date="2026-01-14", skip_push=True)
+
+            assert success is True
+            # Generator should NOT have been called since draft exists
+            mock_generate.assert_not_called()
+
+
 class TestGitOperations:
     """Tests for Git operations."""
 

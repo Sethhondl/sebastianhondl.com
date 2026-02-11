@@ -18,6 +18,7 @@ MARKER_FILE = Path.home() / ".autoblog_last_run"
 SCRIPT_DIR = Path(__file__).parent
 DAILY_BLOG_SCRIPT = SCRIPT_DIR / "daily_blog.py"
 POSTS_DIR = SCRIPT_DIR.parent / "_posts"
+DRAFTS_DIR = SCRIPT_DIR.parent / "_drafts"
 BACKFILL_DAYS = 7
 
 
@@ -55,8 +56,8 @@ def main() -> int:
         print(f"\nProcessing {target_date}...")
 
         # Skip if post already exists for this date
-        if list(POSTS_DIR.glob(f"{target_date}-*.md")):
-            print(f"  Post already exists, skipping")
+        if list(POSTS_DIR.glob(f"{target_date}-*.md")) or list(DRAFTS_DIR.glob(f"{target_date}-*.md")):
+            print(f"  Post or draft already exists, skipping")
             continue
 
         result = subprocess.run(
